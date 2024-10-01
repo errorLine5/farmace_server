@@ -12,7 +12,7 @@ def generate_data():
  random_int = random.randint(1000, 9999)
  data= {
   "email": "test"+str(random_int)+"@me.com",
-  "password": "testpassword",
+  "password": "test"+str(random_int)+"Password",
   "first_name": "test",
   "last_name": "test",
   "phone_number": "213" + str(random_int),
@@ -37,6 +37,7 @@ class TestRegister(unittest.TestCase):
  
   
   self.response = requests.post(self.url, params=self.params)
+  print (self.response.text)
   self.assertEqual(self.response.status_code, 200)
   
  
@@ -90,6 +91,8 @@ class TestRegister(unittest.TestCase):
    self.response = requests.post(self.url, params=newparams)
    print (self.response)
    print (self.response.text)
+   
+   
    self.assertEqual(self.response.status_code, 200)
    self.assertEqual(json.loads(self.response.text)["token"], token)
 
