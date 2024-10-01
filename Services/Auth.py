@@ -12,7 +12,12 @@ class Auth:
   self.dbService = dbService
   
  def isAuth(self,email, token):
-  result = self.dbService.select(f"SELECT * FROM users WHERE email = '{email}' AND token = '{token}'")
+  
+  # Prepare the SQL statement using parameterized queries
+  query = "SELECT * FROM users WHERE email = ? AND token = ?"
+  # Execute the query with parameters
+  result = self.dbService.select(query, (email, token))
+  # Check if the token is valid
   if len(result) == 0:
    raise fastapi.HTTPException(status_code=404, detail="Token not valid")
 

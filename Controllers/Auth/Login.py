@@ -15,9 +15,10 @@ class Login_ctl:
 
  def login( self, email, password):
   email, password = sanitize(email), sanitize(password)
-  print (email, password)
-  print (f"SELECT * FROM users WHERE email = '{email}' AND password = '{password}'")
-  result = self.dbService.select(f"SELECT * FROM users WHERE email = '{email}' AND password = '{password}'")
+
+  query = "SELECT * FROM users WHERE email = ? AND password = ?"
+
+  result = self.dbService.select(query, (email, password))
   if len(result) == 0:
    raise fastapi.HTTPException(status_code=404, detail="User not found")
   token = self.token.generateToken()
@@ -30,7 +31,11 @@ class Login_ctl:
  
  def tokenCheck(self,email, token):
   email, token = sanitize(email), sanitize(token)
-  result = self.dbService.select(f"SELECT * FROM users WHERE email = '{email}' AND token = '{token}'")
+  query = "SELECT * FROM users WHERE email = ? AND token = ?"
+
+  result = self.dbService.select(query, (email, token))
+  
+
   print (result)
   token_expiration = result[0][7]
   now = str(datetime.datetime.now())

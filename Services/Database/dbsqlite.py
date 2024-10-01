@@ -29,10 +29,10 @@ class DBSqlite:
     self.conn.execute(query, params)
     self.conn.commit()
 
-  def select(self, sql):
+  def select(self, query, params):
     try:
       cur = self.conn.cursor()
-      cur.execute(sql)
+      cur.execute(query, params)
       return cur.fetchall()
     except Error as e:
       print(e)
