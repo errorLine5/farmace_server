@@ -5,7 +5,7 @@ from fastapi import status, HTTPException
 
 
 
-class Auth:
+class Route:
 
  def __init__(self, app : FastAPI):
   self.router  = APIRouter()
@@ -13,12 +13,15 @@ class Auth:
   self.loginctl = Login_ctl(app.db)
   
   
+  
   @self.router.post("/login")
   async def login(email: str, password: str): 
     return self.loginctl.login( email, password)
 
-
-    
+  @self.router.post("/token_test")
+  async def token_test(email:str, token:str):
+    return self.loginctl.tokenCheck(email, token)
+  
   
   @self.router.post("/register" )
   async def register(email: str, password: str, first_name: str, last_name: str, phone_number: str, picture: str ):

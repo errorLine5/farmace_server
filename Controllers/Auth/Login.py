@@ -1,12 +1,10 @@
 import datetime
+import json
 import re
-
+from Services.Sanification import sanitize
 import fastapi
 from Controllers.Auth.TokenAuth import Token
 
-def sanitize(value): #allow @ and . - ! _ and numbers and letters
- sanitized = re.sub('[^A-Za-z0-9.@_-]', '', value)
- return sanitized
 
 
 class Login_ctl:
@@ -16,8 +14,7 @@ class Login_ctl:
 
 
  def login( self, email, password):
-  email = sanitize(email)
-  password = sanitize(password)
+  email, password = sanitize(email), sanitize(password)
   print (email, password)
   print (f"SELECT * FROM users WHERE email = '{email}' AND password = '{password}'")
   result = self.dbService.select(f"SELECT * FROM users WHERE email = '{email}' AND password = '{password}'")
@@ -28,6 +25,18 @@ class Login_ctl:
  
   #update token
   self.dbService.execute(f"UPDATE users SET token = '{token}' , token_expiration = '{now}' WHERE email = '{email}'")
+  return {"token": token, "token_expiration": now}
+ 
+ def tokenCheck(self,email, token):
+  email, token = sanitize(email), sanitize(token)
+  result = self.dbService.select(f"SELECT * FROM users WHERE email = '{email}' AND token = '{token}'")
+  print (result)
+  token_expiration = result[0][7]
+  now = str(datetime.datetime.now())
+  if len(result) == 0:
+   raise fastapi.HTTPException(status_code=404, detail="Token not valid")
+  if token_expiration < now:
+   raise fastapi.HTTPException(status_code=404, detail="Token expired")
 
   
-  return {"token": token, "token_expiration": now}
+  return {"token": token, "token_expiration": token_expiration}
