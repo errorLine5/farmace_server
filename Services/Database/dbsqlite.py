@@ -24,6 +24,10 @@ class DBSqlite:
     except Error as e:
       print(e)
       exit()
+      
+  def execute(self,query, params):
+    self.conn.execute(query, params)
+    self.conn.commit()
 
   def select(self, sql):
     try:

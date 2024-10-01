@@ -24,7 +24,8 @@ class Login_ctl:
   now = str(datetime.datetime.now()+datetime.timedelta(days=10))
  
   #update token
-  self.dbService.execute(f"UPDATE users SET token = '{token}' , token_expiration = '{now}' WHERE email = '{email}'")
+  query = "UPDATE users SET token = ?, token_expiration = ? WHERE email = ?"
+  self.dbService.execute(query, (token, now, email))
   return {"token": token, "token_expiration": now}
  
  def tokenCheck(self,email, token):
