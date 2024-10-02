@@ -15,7 +15,7 @@ class DBSqlite:
     if self.conn:
       self.conn.close()
       
-  def execute(self, sql):
+  def executeRAW(self, sql):
     try:
       cur = self.conn.cursor()
       cur.execute(sql)

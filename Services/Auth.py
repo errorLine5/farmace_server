@@ -21,4 +21,15 @@ class Auth:
   if len(result) == 0:
    raise fastapi.HTTPException(status_code=404, detail="Token not valid")
 
-  return True
+  return self
+ def isEmailVerified(self, email, token):
+
+  # Prepare the SQL statement using parameterized queries
+  query = "SELECT * FROM users WHERE email = ? AND token = ? AND verified = TRUE"
+  # Execute the query with parameters
+  result = self.dbService.select(query, (email, token))
+  # Check if the token is valid
+  if len(result) == 0:
+   raise fastapi.HTTPException(status_code=404, detail="email not verified")
+
+  return self

@@ -27,6 +27,11 @@ class Route:
   async def register(email: str, password: str, first_name: str, last_name: str, phone_number: str, picture: str ):
     return self.registerctl.register( email, password, first_name, last_name, phone_number, picture)
   
-  
-  app.include_router( prefix="/auth", router=self.router) 
+  @self.router.post("/verifyemail")
+  async def verifyEmail(email: str, email_token: str):
+    return self.registerctl.verifyEmail( email, email_token)
 
+
+  app.include_router( prefix="/auth", router=self.router)
+  
+  
