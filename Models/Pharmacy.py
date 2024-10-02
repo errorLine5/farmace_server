@@ -17,8 +17,8 @@ class Pharmacy(pydantic.BaseModel):
             CREATE TABLE IF NOT EXISTS pharmacy (
                 id CHAR(36) PRIMARY KEY ,
                 name TEXT,
-                address TEXT,
-                phone_number INTEGER,
+                address TEXT UNIQUE,
+                phone_number INTEGER UNIQUE,
                 latitude REAL,
                 longitude REAL,
                 nocturn INTEGER
