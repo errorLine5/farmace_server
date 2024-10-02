@@ -15,10 +15,13 @@ class Route:
   
 
   @self.router.post("/addPharmacy")
-  async def fill(name: str , address: str, phone_number: int, latitude: float, longitude: float, nocturn: str, id:str = None,):
+  async def fill(name: str , address: str, phone_number: int, latitude: float, longitude: float, nocturn: str, email:str,token: str, id:str = None):
      if id is None:
       id = str(uuid4())
-     return self.fill_ctl.fill( id, name, address, phone_number, latitude, longitude, nocturn)
+     return self.fill_ctl.fill( id, name, address, phone_number, latitude, longitude, nocturn,email, token)
   
+  @self.router.post("/searchByPos")
+  async def searchByPos(latitude: float, longitude: float, token: str ):
+    return self.fill_ctl.searchByPos(latitude, longitude)
 
   app.include_router( prefix="/pharmacy" ,tags=["pharmacy"], router=self.router)
