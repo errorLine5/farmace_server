@@ -20,7 +20,7 @@ class Fill_ctl:
      
 
      query = "INSERT INTO pharmacy (id, name, address, phone_number, latitude, longitude, nocturn) VALUES (?, ?, ?, ?, ?, ?, ?)"
-
+    
      self.dbService.execute(query, (id, name, address, phone_number, latitude, longitude, nocturn))
 
      return {"status": "success", "id_pharmacy": id}
