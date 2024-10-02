@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+from fastapi import HTTPException
 
 class DBSqlite:
   def __init__(self, dbname):
@@ -26,7 +27,10 @@ class DBSqlite:
       exit()
       
   def execute(self,query, params):
-    self.conn.execute(query, params)
+    try:
+      self.conn.execute(query, params)
+    except Error as e:
+      raise HTTPException(status_code=404, detail=str(e))
     self.conn.commit()
 
   def select(self, query, params):
@@ -35,5 +39,5 @@ class DBSqlite:
       cur.execute(query, params)
       return cur.fetchall()
     except Error as e:
-      print(e)
+      raise HTTPException(status_code=404, detail=str(e))
       exit()
