@@ -15,7 +15,7 @@ class Pharmacy(pydantic.BaseModel):
     def makeTableSqlite():
         return """
             CREATE TABLE IF NOT EXISTS pharmacy (
-                id CHAR(36) PRIMARY KEY,
+                id CHAR(36) PRIMARY KEY ,
                 name TEXT,
                 address TEXT,
                 phone_number INTEGER,

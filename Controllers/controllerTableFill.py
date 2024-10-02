@@ -23,4 +23,4 @@ class Fill_ctl:
 
      self.dbService.execute(query, (id, name, address, phone_number, latitude, longitude, nocturn))
 
-     return {"status": "success"}
+     return {"status": "success", "id_pharmacy": id}

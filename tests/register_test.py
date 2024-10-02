@@ -132,7 +132,3 @@ class TestRegister(unittest.TestCase):
   print (self.response.text)
   self.assertEqual(self.response.status_code, 200)
   
-
-  
-
-  

@@ -1,6 +1,8 @@
 from fastapi import APIRouter, FastAPI
 from Controllers.controllerTableFill import Fill_ctl 
 from fastapi import status, HTTPException
+from uuid import uuid4 
+
 
 
 
@@ -12,9 +14,11 @@ class Route:
 
   
 
-  @self.router.post("/fill")
-  async def fill(id: str, name: str, address: str, phone_number: int, latitude: float, longitude: float, nocturn: str):
+  @self.router.post("/addPharmacy")
+  async def fill(name: str , address: str, phone_number: int, latitude: float, longitude: float, nocturn: str, id:str = None,):
+     if id is None:
+      id = str(uuid4())
      return self.fill_ctl.fill( id, name, address, phone_number, latitude, longitude, nocturn)
   
 
-  app.include_router( prefix="/tableFill" ,tags=["tableFill"], router=self.router)
+  app.include_router( prefix="/pharmacy" ,tags=["pharmacy"], router=self.router)
