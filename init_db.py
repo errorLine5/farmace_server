@@ -1,18 +1,22 @@
+import os
 from Models.Users import Users
 from Models.Pharmacy import Pharmacy
 from Services.Database.dbsqlite import DBSqlite
 
 
-#THIS WILL BE AN ACCIDENT WHILE PULLING IT IN MAIN
-db = DBSqlite("database.db")
+sql_file = open("template_sqlite.sql", "r")
+database_file = "database.db"
 
-templateDBFile = open("template_sqlite.sql", "r")
 
-#split by ;
-instructions = templateDBFile.read().split(';')
+#delete database
+if os.path.exists(database_file):
+ os.remove(database_file)
+db = DBSqlite(database_file)
 
-for instruction in instructions:
- db.executeRAW(instruction)
+
+commands = sql_file.read().split(";")
+for command in commands:
+ db.executeRAW(command)
 
 
 # db.executeRAW(Users.makeTableSqlite())
