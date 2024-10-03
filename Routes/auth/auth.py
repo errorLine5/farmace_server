@@ -2,6 +2,7 @@ from fastapi import APIRouter, FastAPI
 from Controllers.Auth.Login import Login_ctl
 from Controllers.Auth.Register import registerctl
 from fastapi import status, HTTPException
+from Models.Users import Users
 
 
 
@@ -24,8 +25,8 @@ class Route:
   
   
   @self.router.post("/register" )
-  async def register(email: str, password: str, first_name: str, last_name: str, phone_number: str, picture: str ):
-    return self.registerctl.register( email, password, first_name, last_name, phone_number, picture)
+  async def register( email: str, username: str, password: str, first_name: str, last_name: str, phone_number: str, picture: str):
+    return self.registerctl.register( email, username, password, first_name, last_name, phone_number, picture)
   
   @self.router.post("/verifyemail")
   async def verifyEmail(email: str, email_token: str):

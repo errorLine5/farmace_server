@@ -11,13 +11,18 @@ create table Pharmacy(
 );
 create table Users(
     id TEXT PRIMARY KEY NOT NULL,
-    password_user TEXT NOT NULL,
+    password TEXT NOT NULL,
     email TEXT NOT NULL,
     username TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    phone_number TEXT NOT NULL,
+    picture TEXT NOT NULL,
     verified BOOLEAN NOT NULL DEFAULT FALSE,
-    token INTEGER NOT NULL,
+    token TEXT ,
+    token_expiration DATETIME ,
     can_own BOOLEAN DEFAULT FALSE,
-    email_token INTEGER NOT NULL
+    email_token TEXT 
 );
 create table Works(
     id TEXT PRIMARY KEY NOT NULL,
