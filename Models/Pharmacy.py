@@ -1,26 +1,29 @@
 import pydantic
 
-from uuid import uuid4 as GUID
+
 
 class Pharmacy(pydantic.BaseModel):
-    id: GUID
-    name: str
-    address: str
-    phone_number: int
-    latitude: float
-    longitude: float
-    nocturn: bool
+
+    id: str
+    nome_farmacia: str
+    indirizzo: str
+    lat: float
+    lng: float
+    orari: str
+    turni: str
+    numeri: str
+    sito_web: str
 
 
-    def makeTableSqlite():
-        return """
-            CREATE TABLE IF NOT EXISTS pharmacy (
-                id CHAR(36) PRIMARY KEY ,
-                name TEXT,
-                address TEXT UNIQUE,
-                phone_number INTEGER UNIQUE,
-                latitude REAL,
-                longitude REAL,
-                nocturn INTEGER
-            );
-        """
+'''
+create table Pharmacy(
+    id TEXT PRIMARY KEY NOT NULL,
+    nome_farmacia TEXT NOT NULL,
+    indirizzo TEXT NOT NULL,
+    lat FLOAT NOT NULL,
+    lng FLOAT NOT NULL,
+    orari JSON NOT NULL,
+    turni JSON NOT NULL,
+    numeri TEXT NOT NULL,
+    sito_web TEXT NOT NULL
+);'''
