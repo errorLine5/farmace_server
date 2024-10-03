@@ -15,10 +15,11 @@ def generate_data():
  data= {
   "email": "test"+str(random_int)+"@me.com",
   "password": "test"+str(random_int)+"Password",
+  "username": "test"+str(random_int),
   "first_name": "test",
   "last_name": "test",
   "phone_number": "213" + str(random_int),
-  "picture": "test"
+  "picture": "test",
   }
  return data
  

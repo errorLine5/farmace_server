@@ -28,10 +28,24 @@ class DBSqlite:
       
   def execute(self,query, params):
     try:
-      self.conn.execute(query, params)
+      data = self.conn.execute(query, params)
+      self.conn.commit()
+      return data
+    
     except Error as e:
+      print (e)
       raise HTTPException(status_code=404, detail=str(e))
-    self.conn.commit()
+
+  def selectRAW(self, sql):
+    try:
+      cur = self.conn.cursor()
+      cur.execute(sql)
+      return cur.fetchall()
+    except Error as e:
+      print (e)
+      raise HTTPException(status_code=404, detail=str(e))
+      exit()
+         
 
   def select(self, query, params):
     try:
@@ -39,5 +53,6 @@ class DBSqlite:
       cur.execute(query, params)
       return cur.fetchall()
     except Error as e:
+      print (e)
       raise HTTPException(status_code=404, detail=str(e))
       exit()
