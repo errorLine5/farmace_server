@@ -3,6 +3,7 @@ from Controllers.pharmacy.create import create_pharmacy_ctl
 from Controllers.pharmacy.delete import delete_pharmacy_ctl
 from Controllers.pharmacy.edit import edit_pharmacy_ctl
 from Controllers.pharmacy.searchByPos import SearchByPos_pharmacy_ctl
+from Models.Pharmacy import Pharmacy
 from uuid import uuid4 
 
 
@@ -34,8 +35,10 @@ class Route:
     return self.delete_ctl.delete_pharmacy(id, email, token)
   
   @self.router.post("/editPharmacy")
-  async def editPharmacy(id: str, nome_farmacia: str , indirizzo: str, numeri: int, lat: float, lng: float, orari: str, sito_web: str, email:str,token: str):
-    return self.edit_ctl.edit_pharmacy(id, nome_farmacia, indirizzo, numeri, lat, lng, orari, sito_web, email, token)
+  async def editPharmacy( id:str,pharmacy:Pharmacy, email:str,token: str):
+    print(pharmacy)
+
+    return self.edit_ctl.edit_pharmacy( id, pharmacy, email, token)
   
   
   
