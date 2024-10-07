@@ -24,11 +24,17 @@ create table Users(
     can_own BOOLEAN DEFAULT FALSE,
     email_token TEXT 
 );
+
+-- permission = 0 -> default_worker
+-- permission = 1 -> manager
+-- permission = 2 -> admin
+
+
 create table Works(
     id TEXT PRIMARY KEY NOT NULL,
     id_pharmacy INTEGER NOT NULL,
     id_user INTEGER NOT NULL,
-    permission INTEGER NOT NULL,
+    permission INTEGER NOT NULL DEFAULT 0, 
     FOREIGN KEY (id_pharmacy) REFERENCES Pharmacy(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_user) REFERENCES Users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
