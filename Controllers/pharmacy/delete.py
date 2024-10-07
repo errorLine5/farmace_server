@@ -6,9 +6,10 @@ class delete_pharmacy_ctl:
         self.dbService = dbService
         self.auth = Auth(dbService)
 
-    def delete_pharmacy(self, id, token):
-        self.auth.isAuth(token)
-        query = "DELETE FROM pharmacy WHERE id = ?"
+    def delete_pharmacy(self, id, email, token):
+        self.auth.isAuth(email=email, token=token)
+        
+        query = f"DELETE FROM pharmacy WHERE id = {id}"
         self.dbService.delete(query, (id,))
         if self.dbService.execute(query, (id,)):
             return {"status": "success"}

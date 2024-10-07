@@ -11,20 +11,18 @@ class edit_pharmacy_ctl:
         self.auth = Auth(dbService)
 
     def edit_pharmacy(self, id, name, address, phone_number, latitude, longitude, nocturn, email , token):
-        id = sanitize(id)
-        name = sanitize(name)
-        address = sanitize(address)
-        nocturn = sanitize(nocturn)
+        
+        print(id)
         self.auth.isAuth(email=email, token=token)
         
         query = BuildQuery(Pharmacy).select(['id']).where([f"id = '{id}'"]).build()
 
         if self.dbService.executeRAW(query):
-            query = "UPDATE pharmacy SET name = ?, address = ?, phone_number = ?, latitude = ?, longitude = ?, nocturn = ? WHERE id = ?"
+            query = f"UPDATE pharmacy SET nome_farmacia = ?, indirizzo = ?, numeri = ?, lat = ?, lng = ?, turni = ?, orari = ?, sito_web = ? WHERE id = {id}"
 
         else:
             raise fastapi.HTTPException(status_code=404, detail="Pharmacy not found")
 
-        self.dbService.execute(query, (name, address, phone_number, latitude, longitude, nocturn, id))
+        self.dbService.execute(query, (name, address, phone_number, latitude, longitude, nocturn))
         
         return {"status": "success","edited_pharmacy_id": id}

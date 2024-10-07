@@ -6,6 +6,3 @@ def sanitize(value): #allow @ and . - ! _ and numbers and letters
   return None #return none
  sanitized = re.sub(pattern, '', value)
  return sanitized
-
-
-
