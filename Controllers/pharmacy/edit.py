@@ -26,3 +26,5 @@ class edit_pharmacy_ctl:
             raise fastapi.HTTPException(status_code=404, detail="Pharmacy not found")
 
         self.dbService.execute(query, (name, address, phone_number, latitude, longitude, nocturn, id))
+        
+        return {"status": "success","edited_pharmacy_id": id}
