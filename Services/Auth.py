@@ -1,6 +1,7 @@
 
 
-
+from Models import Pharmacy, Users
+from tools.Query import BuildQuery
 from fastapi import FastAPI
 import fastapi
 
@@ -22,6 +23,24 @@ class Auth:
    raise fastapi.HTTPException(status_code=404, detail="Token not valid")
 
   return self
+ 
+ def isAuthorizedToCreate (self, email, token): ##TO BE TESTED
+  query = BuildQuery(Users).select(['can_own']).where([f"email = '{email}' AND token = '{token}'"]).build()
+  result = self.dbService.selectRAW(query)
+  
+  print ( result)
+  if len(result) == 0:
+   raise fastapi.HTTPException(status_code=404, detail="Token not valid")
+  if result[0][0] == 0:
+   raise fastapi.HTTPException(status_code=404, detail="User not authorized")
+  return self
+  
+ def isAuthorizedToUpdate (self, email, token, pharmacy_id):
+  #if permission to update is >= 2
+  print ("TO BE IMPLEMENTED") #user must work for a pharmacy and have admin permission == 2
+  raise fastapi.HTTPException(status_code=404, detail="NOT IMPLEMENTED")
+ 
+ 
  def isEmailVerified(self, email, token):
 
   # Prepare the SQL statement using parameterized queries
