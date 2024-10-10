@@ -38,9 +38,4 @@ class Route:
   
   
   
-  
-  
-  
-  
-  
   app.include_router( prefix="/pharmacy" ,tags=["pharmacy"], router=self.router)
