@@ -15,6 +15,7 @@ class Route:
   self.fill_ctl = create_pharmacy_ctl(app.db)
   self.delete_ctl = delete_pharmacy_ctl(app.db)
   self.edit_ctl = edit_pharmacy_ctl(app.db)
+  #self.addWorker_ctl = add_Worker_ctl(app.db)
 
   
 
@@ -36,6 +37,9 @@ class Route:
   async def editPharmacy(id: str, name: str , address: str, phone_number: int, latitude: float, longitude: float, nocturn: str, email:str,token: str):
     return self.edit_ctl.edit_pharmacy(id, name, address, phone_number, latitude, longitude, nocturn,email, token)
   
+  # @self.router.post("/addWorker")
+  # async def addWorker(id:str, id_pharmacy: str, id_user:str, permission: int, email: str, token: str):
+  #  return self.addWorker_ctl.addWorker(id, id_pharmacy, id_user, permission, email, token)
   
   
   app.include_router( prefix="/pharmacy" ,tags=["pharmacy"], router=self.router)
