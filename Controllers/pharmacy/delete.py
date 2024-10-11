@@ -11,7 +11,6 @@ class delete_pharmacy_ctl:
         self.auth.isAuth(email=email, token=token)
 
         query=f'SELECT * FROM pharmacy WHERE id = "{id}"'
-        
         if len(self.dbService.selectRAW(query)) == 0:
             raise fastapi.HTTPException(status_code=404, detail="Pharmacy not found")
         
