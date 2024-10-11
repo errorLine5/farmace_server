@@ -12,20 +12,22 @@ class edit_pharmacy_ctl:
         self.auth = Auth(dbService)
 
     def edit_pharmacy(self, id, pharmacy:Pharmacy, email , token):
-        print (id)
+        id = sanitize(id)
         
         self.auth.isAuth(email=email, token=token)
         
-        query = f'SELECT * FROM pharmacy WHERE id = "{id}"' #this is not efficient
-        if len( self.dbService.selectRAW(query)) == 0:
+        query = f'SELECT * FROM pharmacy WHERE id = ?'
+        result=self.dbService.selectRAW(query, (id,)) 
+        if not result:
+            
             raise fastapi.HTTPException(status_code=404, detail="Pharmacy not found")
 
         
         try:
-            query = f'UPDATE pharmacy SET nome_farmacia = ?, indirizzo = ?, numeri = ?, lat = ?, lng = ?, turni = ?, orari = ?, sito_web = ? WHERE id = "{id}"'
-            print(query)
-            self.dbService.execute(query, (pharmacy.nome_farmacia, pharmacy.indirizzo, pharmacy.numeri, pharmacy.lat, pharmacy.lng, pharmacy.turni, pharmacy.orari, pharmacy.sito_web))
+            query = f'UPDATE pharmacy SET nome_farmacia = ?, indirizzo = ?, numeri = ?, lat = ?, lng = ?, turni = ?, orari = ?, sito_web = ? WHERE id = ?'
+            
+            self.dbService.execute(query, (pharmacy.nome_farmacia, pharmacy.indirizzo, pharmacy.numeri, pharmacy.lat, pharmacy.lng, pharmacy.turni, pharmacy.orari, pharmacy.sito_web, id))
         except Exception as e:
-            return fastapi.HTTPException(status_code=404, detail="Error editing pharmacy: " + str(e))
+            raise fastapi.HTTPException(status_code=500, detail="Error editing pharmacy: " + str(e))
         
         return {"status": "success","edited_pharmacy_id": id}
