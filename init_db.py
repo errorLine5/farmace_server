@@ -1,6 +1,7 @@
 import os
 from Models.Users import Users
 from Models.Pharmacy import Pharmacy
+from Models.Worker import Worker
 from Services.Database.dbsqlite import DBSqlite
 
 
