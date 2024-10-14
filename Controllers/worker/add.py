@@ -14,16 +14,19 @@ class add_worker_ctl:
         self.auth = Auth(dbService)
 
 
-    def add_worker(self, id, id_pharmacy, id_user, permission,  email, token):
+    def add_worker(self, id, id_pharmacy, id_user, permission, email, token):
         id = sanitize(id)
         id_pharmacy = sanitize(id_pharmacy)
         id_user = sanitize(id_user)
         permission = sanitize(permission)
 
         self.auth.isAuth(email=email, token=token)
-
         if id is None:
             id=str(uuid4())
+
+        #if self.auth.get_permission_level(worker_id)>0:
+
+        
 
         queryPharmacy=f'SELECT id FROM Pharmacy WHERE id =? '
 
@@ -40,13 +43,16 @@ class add_worker_ctl:
             raise fastapi.HTTPException(status_code=404, detail="User not found")
         
         newWorker=Worker(
-            id=id,
-            id_pharmacy=id_pharmacy,
-            id_user=id_user,
-            permission=permission
+                id=id,
+                id_pharmacy=id_pharmacy,
+                id_user=id_user,
+                permission=permission
         )
 
         query=BuildQuery(newWorker).insert_into().build()
         self.dbService.executeRAW(query)
 
         return {"status": "success", "id_worker": id}
+
+        #else:
+         #   raise fastapi.HTTPException(status_code=404, detail="permission denied")

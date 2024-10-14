@@ -10,23 +10,38 @@ class edit_worker_ctl:
         self.dbService = dbService
         self.auth = Auth(dbService)
 
-    def edit_worker(self, id, worker:Worker,email, token):
+    def edit_worker(self, id, id_pharmacy, id_user, permission, worker_id, email, token):
         id = sanitize(id)
+        id_pharmacy = sanitize(id_pharmacy)
+        id_user = sanitize(id_user)
+        permission = sanitize(permission)
 
         self.auth.isAuth(email=email, token=token)
 
-        query = 'SELECT * FROM Worker Where id=?'
+        if self.auth.get_permission_level(worker_id)>0:
 
-        result = self.dbService.select(query, (id,))
-        if not result:
-            raise fastapi.HTTPException(status_code=404, detail="Worker not found")
 
-        try:
-            query = 'UPDATE Worker SET   id_pharmacy=?, permission=? WHERE id=?'
+            query = 'SELECT * FROM Worker Where id=?'
 
-            self.dbService.execute(query, ( worker.id_pharmacy, worker.permission,id))
+            result = self.dbService.select(query, (id,))
+            if not result:
+                raise fastapi.HTTPException(status_code=404, detail="Worker not found")
 
-        except Exception as e:
-            raise fastapi.HTTPException(status_code=404, detail=f"Error editing worker: " + str(e))
+            editedWorker = Worker(
+                id=id,
+                id_pharmacy=id_pharmacy,
+                id_user=id_user,
+                permission=permission
+            )
+            try:
+                query = 'UPDATE Worker SET   id_pharmacy=?, permission=? WHERE id=?'
 
-        return {"status": "success", "edited_worker_id": id}
+                self.dbService.execute(query, ( editedWorker.id_pharmacy, editedWorker.permission,id))
+
+            except Exception as e:
+                raise fastapi.HTTPException(status_code=404, detail=f"Error editing worker: " + str(e))
+
+            return {"status": "success", "edited_worker_id": id}
+
+        else:
+            raise fastapi.HTTPException(status_code=404, detail="permission denied")

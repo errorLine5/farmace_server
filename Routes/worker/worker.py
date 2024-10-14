@@ -13,16 +13,16 @@ class Route:
   self.edit = edit_worker_ctl(app.db)
 
   @self.router.post("/addWorker")
-  async def add( id_pharmacy: str, id_user: str, permission: str, email: str, token: str, id: str = None):
-    return self.add.add_worker(id, id_pharmacy, id_user, permission, email, token)
+  async def add( id_pharmacy: str, id_user: str, permission: str,  email: str, token: str, id: str = None):
+    return self.add.add_worker(id, id_pharmacy, id_user, permission,  email, token)
   
   @self.router.delete("/deleteWorker")
-  async def delete(id: str, email: str, token: str):
-    return self.delete.delete_worker(id, email, token)  
+  async def delete(id: str, worker_id: str, email: str, token: str):
+    return self.delete.delete_worker(id, worker_id, email, token)  
 
   @self.router.post("/editWorker")
-  async def edit( id:str, worker:Worker, email: str, token: str):
-    return self.edit.edit_worker(id, worker, email, token) 
+  async def edit( id:str, id_pharmacy: str, id_user: str, permission: str, worker_id: str, email: str, token: str):
+    return self.edit.edit_worker(id, id_pharmacy, id_user, permission, worker_id, email, token) 
 
 
 
