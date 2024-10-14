@@ -21,10 +21,10 @@ class Route:
   
 
   @self.router.post("/addPharmacy")
-  async def fill(name: str , address: str, phone_number: int, latitude: float, longitude: float, nocturn: str, email:str,sito_web: str,token: str, id:str = None):
+  async def fill(nome: str , indirizzo: str, lat: float, lng:float, orari:str, turni:str, numeri:str, sito_web: str,  email:str,token: str, id:str = None):
      if id is None:
       id = str(uuid4())
-     return self.fill_ctl.create_farmacy( id, name, address, phone_number, latitude, longitude, nocturn, sito_web, email, token)
+     return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, token)
   
   @self.router.post("/searchByPos")
   async def searchByPos(latitude: float, longitude: float,email: str, token: str ):
@@ -35,10 +35,9 @@ class Route:
     return self.delete_ctl.delete_pharmacy(id, email, token)
   
   @self.router.post("/editPharmacy")
-  async def editPharmacy( id:str,pharmacy:Pharmacy, email:str,token: str):
-    print(pharmacy)
+  async def editPharmacy( id:str, nome_farmacia: str, indirizzo: str, lat:  float, lng: float, orari: str, turni: str, numeri:str, sito_web: str, email:str, token: str):
 
-    return self.edit_ctl.edit_pharmacy( id, pharmacy, email, token)
+    return self.edit_ctl.edit_pharmacy( id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, token)
   
   
   

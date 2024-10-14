@@ -15,11 +15,12 @@ class create_pharmacy_ctl:
   self.dbService = dbService
   self.auth = Auth(dbService)
 
- def create_farmacy(self, id, name, address, phone_number, latitude, longitude, nocturn, sito_web, email , token):
+ def create_farmacy(self, id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, email , token):
      id = sanitize(id)
-     name = sanitize(name)
-     address = sanitize(address)
-     nocturn = sanitize(nocturn)
+     nome_farmacia = sanitize(nome_farmacia)
+     indirizzo = sanitize(indirizzo)
+     orari = sanitize(orari)
+     turni= sanitize(turni)
      sito_web = sanitize(sito_web)
      
      self.auth.isAuth(email=email, token=token)
@@ -29,14 +30,13 @@ class create_pharmacy_ctl:
 
      newPharmacy = Pharmacy(
          id = id,
-         nome_farmacia= name,
-         indirizzo=  address,
-         numeri = str(phone_number),
-         lat = latitude,
-         lng = longitude,
-         turni= nocturn,
-         orari= '[]',
-        
+         nome_farmacia= nome_farmacia,
+         indirizzo=  indirizzo,
+         lat = lat,
+         lng = lng,
+         orari= orari,
+         turni= turni,
+         numeri = str(numeri),
          sito_web = sito_web
      )
 
