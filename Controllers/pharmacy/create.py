@@ -15,8 +15,10 @@ class create_pharmacy_ctl:
   self.dbService = dbService
   self.auth = Auth(dbService)
 
- def create_farmacy(self, id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, email , token):
+ def create_farmacy(self, id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, email , worker_id, token):
      id = sanitize(id)
+     if id is None:
+         id = str(uuid4())
      nome_farmacia = sanitize(nome_farmacia)
      indirizzo = sanitize(indirizzo)
      orari = sanitize(orari)
@@ -25,10 +27,9 @@ class create_pharmacy_ctl:
      
      self.auth.isAuth(email=email, token=token)
 
-     if id is None:
-         id = str(uuid4())
+     if self.auth.get_permission_level(worker_id)>1:
 
-     newPharmacy = Pharmacy(
+        newPharmacy = Pharmacy(
          id = id,
          nome_farmacia= nome_farmacia,
          indirizzo=  indirizzo,
@@ -38,9 +39,12 @@ class create_pharmacy_ctl:
          turni= turni,
          numeri = str(numeri),
          sito_web = sito_web
-     )
+        )
 
-     query = BuildQuery(newPharmacy).insert_into().build()
-     self.dbService.executeRAW(query)
+        query = BuildQuery(newPharmacy).insert_into().build()
+        self.dbService.executeRAW(query)
 
-     return {"status": "success", "id_pharmacy": id}
+        return {"status": "success", "id_pharmacy": id}
+
+     else:
+         raise fastapi.HTTPException(status_code=403, detail="Permission denied")

@@ -21,10 +21,10 @@ class Route:
   
 
   @self.router.post("/addPharmacy")
-  async def fill(nome: str , indirizzo: str, lat: float, lng:float, orari:str, turni:str, numeri:str, sito_web: str,  email:str,token: str, id:str = None):
+  async def fill(nome: str , indirizzo: str, lat: float, lng:float, orari:str, turni:str, numeri:str, sito_web: str,  email:str, worker_id: str, token: str, id: str = None):
      if id is None:
       id = str(uuid4())
-     return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, token)
+     return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, worker_id, token)
   
   @self.router.post("/searchByPos")
   async def searchByPos(latitude: float, longitude: float,email: str, token: str ):

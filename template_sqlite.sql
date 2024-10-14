@@ -25,9 +25,9 @@ create table Users(
     email_token TEXT 
 );
 
--- permission = 0 -> default_worker
--- permission = 1 -> manager
--- permission = 2 -> admin
+-- permission = 0 -> default_worker : permission to edit items and reservation
+-- permission = 1 -> manager : permition to edit workers and items
+-- permission = 2 -> admin : permition to edit workers, items and pharmacy
 
 
 create table Worker(

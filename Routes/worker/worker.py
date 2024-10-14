@@ -13,7 +13,7 @@ class Route:
   self.edit = edit_worker_ctl(app.db)
 
   @self.router.post("/addWorker")
-  async def add( id_pharmacy: str, id_user: str, permission: str, email: str, token: str, id: str =None):
+  async def add( id_pharmacy: str, id_user: str, permission: str, email: str, token: str, id: str = None):
     return self.add.add_worker(id, id_pharmacy, id_user, permission, email, token)
   
   @self.router.delete("/deleteWorker")

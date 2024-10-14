@@ -61,3 +61,9 @@ class Auth:
    raise fastapi.HTTPException(status_code=404, detail="email not verified")
 
   return self
+ 
+ def get_permission_level(self, id):
+  query="SELECT permission FROM Worker WHERE id = ?"
+  result=self.dbService.select(query, (id,))
+  permission_level=result[0][0]
+  return permission_level
