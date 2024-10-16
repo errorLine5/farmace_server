@@ -28,7 +28,7 @@ class add_worker_ctl:
 
         
 
-        queryPharmacy=f'SELECT id FROM Pharmacy WHERE id =? '
+        queryPharmacy='SELECT id FROM Pharmacy WHERE id =? '
 
         resultPharmacy = self.dbService.select(queryPharmacy, (id_pharmacy,))
 

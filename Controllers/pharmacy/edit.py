@@ -17,7 +17,7 @@ class edit_pharmacy_ctl:
         self.auth.isAuth(email=email, token=token)
         
         if self.auth.get_permission_level(worker_id)>1:
-            query = f'SELECT * FROM pharmacy WHERE id = ?'
+            query = 'SELECT * FROM pharmacy WHERE id = ?'
             result=self.dbService.select(query, (id,)) 
             if not result:
             
@@ -36,7 +36,7 @@ class edit_pharmacy_ctl:
             )
             print(editedPharmacy)
             try:
-                query = f'UPDATE pharmacy SET nome_farmacia = ?, indirizzo = ?,  lat = ?, lng = ?, orari = ?, turni = ?, numeri = ?, sito_web = ? WHERE id = ?'
+                query = 'UPDATE pharmacy SET nome_farmacia = ?, indirizzo = ?,  lat = ?, lng = ?, orari = ?, turni = ?, numeri = ?, sito_web = ? WHERE id = ?'
             
                 self.dbService.execute(query, (editedPharmacy.nome_farmacia, editedPharmacy.indirizzo,  editedPharmacy.lat, editedPharmacy.lng, editedPharmacy.orari, editedPharmacy.turni, editedPharmacy.numeri, editedPharmacy.sito_web, id))
             except Exception as e:
