@@ -3,6 +3,7 @@ import json
 import re
 from uuid import uuid4
 from Models.Pharmacy import Pharmacy
+from Models.Worker import Worker
 from Services.Sanification import sanitize
 import fastapi
 from Services.FieldValidation import FieldValidation
@@ -42,6 +43,20 @@ class create_pharmacy_ctl:
         )
 
      query = BuildQuery(newPharmacy).insert_into().build()
+     self.dbService.executeRAW(query)
+     
+     id_query="SELECT id FROM Users WHERE email = ?"
+     result= self.dbService.select(id_query, (email,))
+     id_user=result[0][0]
+     
+     newWorker=Worker(
+        id=uuid4(),
+        id_pharmacy=id,
+        user_id=id_user,
+        permission=0
+     )
+
+     query = BuildQuery(newWorker).insert_into().build()
      self.dbService.executeRAW(query)
 
      return {"status": "success", "id_pharmacy": id}

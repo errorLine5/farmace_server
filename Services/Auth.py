@@ -65,7 +65,5 @@ class Auth:
  def get_permission_level(self, id):
   query="SELECT permission FROM Worker WHERE id = ?"
   result=self.dbService.select(query, (id,))
-  
-  if result and len(result) > 0: 
-   permission_level=result[0][0]
+  permission_level=result[0][0]
   return permission_level
