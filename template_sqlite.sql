@@ -19,22 +19,20 @@ create table Users(
     phone_number TEXT NOT NULL,
     picture TEXT NOT NULL,
     verified BOOLEAN NOT NULL DEFAULT FALSE,
-    token TEXT ,
-    token_expiration DATETIME ,
+    token TEXT,
+    token_expiration DATETIME,
     can_own BOOLEAN DEFAULT FALSE,
-    email_token TEXT 
+    email_token TEXT
 );
-
 -- permission = 0 -> default_worker : permission to edit items and reservation
 -- permission = 1 -> manager : permition to edit workers and items
 -- permission = 2 -> admin : permition to edit workers, items and pharmacy
-
-
 create table Worker(
     id TEXT PRIMARY KEY NOT NULL,
     id_pharmacy TEXT NOT NULL,
     id_user TEXT NOT NULL,
-    permission INTEGER NOT NULL DEFAULT 0, 
+    UNIQUE (id_user),
+    permission INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (id_pharmacy) REFERENCES Pharmacy(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_user) REFERENCES Users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
