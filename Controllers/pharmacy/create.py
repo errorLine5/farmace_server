@@ -26,9 +26,7 @@ class create_pharmacy_ctl:
      turni= sanitize(turni)
      sito_web = sanitize(sito_web)
      
-     self.auth.isAuth(email=email, token=token)
-
-     #if self.auth.get_permission_level(worker_id)>1:
+     self.auth.isAuth(email=email, token=token)  
 
      newPharmacy = Pharmacy(
         id = id,
@@ -46,20 +44,17 @@ class create_pharmacy_ctl:
      self.dbService.executeRAW(query)
      
      id_query="SELECT id FROM Users WHERE email = ?"
-     result= self.dbService.select(id_query, (email,))
-     id_user=result[0][0]
+     result= self.dbService.execute(id_query, (email,))
+     id_user=result.fetchone()[0]
      
      newWorker=Worker(
-        id=uuid4(),
+        id=str(uuid4()),
         id_pharmacy=id,
-        user_id=id_user,
-        permission=0
-     )
+        id_user=str(id_user),
+        permission=2
+      )
 
      query = BuildQuery(newWorker).insert_into().build()
      self.dbService.executeRAW(query)
 
      return {"status": "success", "id_pharmacy": id}
-
-     #else:
-     #     raise fastapi.HTTPException(status_code=403, detail="Permission denied")

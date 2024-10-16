@@ -18,13 +18,13 @@ class delete_pharmacy_ctl:
 
         if self.auth.get_permission_level(worker_id)>1:
 
-            query=f'SELECT * FROM pharmacy WHERE id = ?'
+            query='SELECT * FROM pharmacy WHERE id = ?'
             result= self.dbService.selectRAW(query, (id,))
             if result == 0:
                 raise fastapi.HTTPException(status_code=404, detail="Pharmacy not found")
         
             try:
-                query = f'DELETE FROM pharmacy WHERE id = ?'
+                query = 'DELETE FROM pharmacy WHERE id = ?'
                 self.dbService.execute(query, (id,))
             except Exception as e:
                 raise fastapi.HTTPException(status_code=404, detail=f"Error deleting pharmacy: " + str(e))
