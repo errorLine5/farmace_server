@@ -1,6 +1,6 @@
 
 
-from Models import Pharmacy, Users, Works
+from Models import Pharmacy, Users, Worker
 from tools.Query import BuildQuery
 from fastapi import FastAPI
 import fastapi
@@ -39,7 +39,7 @@ class Auth:
   query = BuildQuery(Users).select(['id']).where([f"email = '{email}' AND token = '{token}'"]).build()
   res = self.dbService.selectRAW(query)
   uid = res[0][0]
-  query = BuildQuery(Works).select(['permission']).where([f"pharmacy_id = '{pharmacy_id}' AND user_id = '{uid}'"]).build()
+  query = BuildQuery(Worker).select(['permission']).where([f"pharmacy_id = '{pharmacy_id}' AND user_id = '{uid}'"]).build()
   res = self.dbService.selectRAW(query)
   if len(res) == 0:
    raise fastapi.HTTPException(status_code=404, detail="User not authorized")
@@ -61,3 +61,9 @@ class Auth:
    raise fastapi.HTTPException(status_code=404, detail="email not verified")
 
   return self
+ 
+ def get_permission_level(self, id):
+  query="SELECT permission FROM Worker WHERE id = ?"
+  result=self.dbService.select(query, (id,))
+  permission_level=result[0][0]
+  return permission_level

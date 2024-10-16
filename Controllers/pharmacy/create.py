@@ -3,6 +3,7 @@ import json
 import re
 from uuid import uuid4
 from Models.Pharmacy import Pharmacy
+from Models.Worker import Worker
 from Services.Sanification import sanitize
 import fastapi
 from Services.FieldValidation import FieldValidation
@@ -15,32 +16,50 @@ class create_pharmacy_ctl:
   self.dbService = dbService
   self.auth = Auth(dbService)
 
- def create_farmacy(self, id, name, address, phone_number, latitude, longitude, nocturn, sito_web, email , token):
+ def create_farmacy(self, id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web,  email ,  token):
      id = sanitize(id)
-     name = sanitize(name)
-     address = sanitize(address)
-     nocturn = sanitize(nocturn)
+     if id is None:
+         id = str(uuid4())
+     nome_farmacia = sanitize(nome_farmacia)
+     indirizzo = sanitize(indirizzo)
+     orari = sanitize(orari)
+     turni= sanitize(turni)
      sito_web = sanitize(sito_web)
      
      self.auth.isAuth(email=email, token=token)
 
-     if id is None:
-         id = str(uuid4())
+     #if self.auth.get_permission_level(worker_id)>1:
 
      newPharmacy = Pharmacy(
-         id = id,
-         nome_farmacia= name,
-         indirizzo=  address,
-         numeri = str(phone_number),
-         lat = latitude,
-         lng = longitude,
-         turni= nocturn,
-         orari= '[]',
-        
+        id = id,
+         nome_farmacia= nome_farmacia,
+         indirizzo=  indirizzo,
+         lat = lat,
+         lng = lng,
+         orari= orari,
+         turni= turni,
+         numeri = str(numeri),
          sito_web = sito_web
-     )
+        )
 
      query = BuildQuery(newPharmacy).insert_into().build()
      self.dbService.executeRAW(query)
+     
+     id_query="SELECT id FROM Users WHERE email = ?"
+     result= self.dbService.select(id_query, (email,))
+     id_user=result[0][0]
+     
+     newWorker=Worker(
+        id=uuid4(),
+        id_pharmacy=id,
+        user_id=id_user,
+        permission=0
+     )
+
+     query = BuildQuery(newWorker).insert_into().build()
+     self.dbService.executeRAW(query)
 
      return {"status": "success", "id_pharmacy": id}
+
+     #else:
+     #     raise fastapi.HTTPException(status_code=403, detail="Permission denied")
