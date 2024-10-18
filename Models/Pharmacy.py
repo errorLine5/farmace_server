@@ -14,6 +14,12 @@ class Pharmacy(pydantic.BaseModel):
     numeri: str
     sito_web: str
 
+class Coordinates_Range(pydantic.BaseModel):
+    
+    min_latitude: float
+    max_latitude: float
+    min_longitude: float
+    max_longitude: float
 
 '''
 create table Pharmacy(
