@@ -3,7 +3,7 @@ from Controllers.pharmacy.create import create_pharmacy_ctl
 from Controllers.pharmacy.delete import delete_pharmacy_ctl
 from Controllers.pharmacy.edit import edit_pharmacy_ctl
 from Controllers.pharmacy.searchByPos import SearchByPos_pharmacy_ctl
-from Models.Pharmacy import Pharmacy
+from Models.Pharmacy import Coordinates_Range
 from uuid import uuid4 
 
 
@@ -27,8 +27,8 @@ class Route:
      return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, token)
   
   @self.router.post("/searchByPos")
-  async def searchByPos(latitude: float, longitude: float,email: str, token: str ):
-    return self.SearchByPos.search_by_pos(latitude, longitude, email, token)
+  async def searchByPos(minLat: float, maxLat: float, minLng: float, maxLng: float,email: str, token: str ):
+    return self.SearchByPos.search_by_pos(minLat, maxLat, minLng, maxLng, email, token)
 
   @self.router.delete("/deletePharmacy")
   async def deletePharmacy(pharmacy_id: str, worker_id: str, email: str, token: str):

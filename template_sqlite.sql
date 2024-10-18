@@ -27,11 +27,11 @@ create table Users(
 -- permission = 0 -> default_worker : permission to edit items and reservation
 -- permission = 1 -> manager : permition to edit workers and items
 -- permission = 2 -> admin : permition to edit workers, items and pharmacy
+
 create table Worker(
     id TEXT PRIMARY KEY NOT NULL,
     id_pharmacy TEXT NOT NULL,
-    id_user TEXT NOT NULL,
-    UNIQUE (id_user),
+    id_user TEXT NOT NULL UNIQUE,
     permission INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (id_pharmacy) REFERENCES Pharmacy(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_user) REFERENCES Users(id) ON DELETE CASCADE ON UPDATE CASCADE

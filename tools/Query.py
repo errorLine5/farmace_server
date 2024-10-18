@@ -113,7 +113,7 @@ class BuildQuery:
   if len(tables) == 0:
    tables = [self.model.__name__]
   query= self.structure["SELECT"].replace("<columns>", ", ".join(columns))
-  query= f"{query} {self.structure["FROM"]}".replace("<table>", ", ".join(tables))
+  query= f"{query} {self.structure['FROM']}".replace("<table>", ", ".join(tables))
   self.out = query
   return self
  
