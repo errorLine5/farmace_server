@@ -26,6 +26,13 @@ class create_items_ctl:
     if id is None:
         id = str(uuid4())
 
+    queryItems ='SELECT id FROM Pharmacy WHERE id =? '
+
+    resultItems = self.dbService.select(queryItems, (id_pharmacy,))
+
+    if not resultItems:
+            raise fastapi.HTTPException(status_code=404, detail="Items not found")
+    
     newItems = Items(
         id = id,
         item_name= item_name,
@@ -34,8 +41,10 @@ class create_items_ctl:
         price = price
     )
 
-     
-    queryPharmacy='SELECT id FROM Pharmacy WHERE id =? '
+    query=BuildQuery(newItems).insert_into().build()
+    self.dbService.executeRAW(query)
+
+    return {"status": "success", "id_items": id}
 
 
      
