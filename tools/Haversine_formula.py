@@ -1,4 +1,6 @@
 import math
+from Models.Pharmacy import Pharmacy
+
 
 def haversine_formula(lat1, lng1, lat2, lng2)->float:
     
@@ -19,7 +21,3 @@ def haversine_formula(lat1, lng1, lat2, lng2)->float:
     distanza=R*c
 
     return distanza
-
-
-
-#def calcola_distanza(lat1: float, lng1:float, distanza:float):

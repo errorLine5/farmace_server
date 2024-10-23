@@ -3,7 +3,7 @@ from Controllers.pharmacy.create import create_pharmacy_ctl
 from Controllers.pharmacy.delete import delete_pharmacy_ctl
 from Controllers.pharmacy.edit import edit_pharmacy_ctl
 from Controllers.pharmacy.searchByPos import SearchByPos_pharmacy_ctl
-from Models.Pharmacy import Coordinates_Range
+from Controllers.pharmacy.ricerca import ricerca_ctl
 from uuid import uuid4 
 
 
@@ -17,6 +17,7 @@ class Route:
   self.delete_ctl = delete_pharmacy_ctl(app.db)
   self.edit_ctl = edit_pharmacy_ctl(app.db)
   self.SearchByPos = SearchByPos_pharmacy_ctl(app.db)
+  self.ricerca_ctl = ricerca_ctl(app.db)
 
   
 
@@ -39,6 +40,8 @@ class Route:
 
     return self.edit_ctl.edit_pharmacy( id_pharmacy, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, worker_id, email, token)
   
-  
+  @self.router.post("/ricerca")
+  async def ricerca(user_lat: float, user_lng: float, range: float):
+    return self.ricerca_ctl.ricerca(user_lat, user_lng, range)
   
   app.include_router( prefix="/pharmacy" ,tags=["pharmacy"], router=self.router)
