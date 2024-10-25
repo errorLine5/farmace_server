@@ -3,7 +3,9 @@ from Controllers.pharmacy.create import create_pharmacy_ctl
 from Controllers.pharmacy.delete import delete_pharmacy_ctl
 from Controllers.pharmacy.edit import edit_pharmacy_ctl
 from Controllers.pharmacy.searchByPos import SearchByPos_pharmacy_ctl
-from Controllers.pharmacy.ricerca import ricerca_ctl
+from Controllers.pharmacy.ricerca_range import ricerca_ctl
+from Controllers.pharmacy.ricerca_orari import ricerca_orari_ctl
+from Controllers.pharmacy.ricerca_range_orari import ricerca_range_orari_ctl
 from uuid import uuid4 
 
 
@@ -18,7 +20,8 @@ class Route:
   self.edit_ctl = edit_pharmacy_ctl(app.db)
   self.SearchByPos = SearchByPos_pharmacy_ctl(app.db)
   self.ricerca_ctl = ricerca_ctl(app.db)
-
+  self.ricerca_orari_ctl = ricerca_orari_ctl(app.db)
+  self.ricerca_range_orari_ctl = ricerca_range_orari_ctl(app.db)
   
 
   @self.router.post("/addPharmacy")
@@ -43,5 +46,17 @@ class Route:
   @self.router.post("/ricerca")
   async def ricerca(user_lat: float, user_lng: float, range: float):
     return self.ricerca_ctl.ricerca(user_lat, user_lng, range)
+  
+  @self.router.post("/ricerca_orari")
+  async def ricerca_orari(giorno:str, orario_corrente:str):
+    return self.ricerca_orari_ctl.ricerca_farmacia_aperta(giorno,orario_corrente)
+  
+  
+  @self.router.post("/ricerca_range_orari")
+  async def ricerca_range_orari(user_lat: float, user_lng: float, range: float,giorno: str, orario_corrente: str):
+    return self.ricerca_range_orari_ctl.ricerca_range_orari(user_lat, user_lng, range,giorno, orario_corrente)
+  
+  
+  
   
   app.include_router( prefix="/pharmacy" ,tags=["pharmacy"], router=self.router)
