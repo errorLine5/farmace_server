@@ -14,22 +14,22 @@ class delete_worker_ctl:
         id=sanitize(id)
 
         self.auth.isAuth(email=email, token=token)
-        if self.auth.get_permission_level(worker_id)>0:
-            query='SELECT id FROM Worker Where id=?'
+       # if self.auth.get_permission_level(worker_id)>0:
+        query='SELECT id FROM Worker Where id=?'
 
-            result=self.dbService.select(query, (id,))
+        result=self.dbService.select(query, (id,))
 
-            if not result:
+        if not result:
                 raise fastapi.HTTPException(status_code=404, detail="Worker not found")
 
-            try:
+        try:
                 query='DELETE FROM Worker WHERE id=?'
                 self.dbService.execute(query, (id,))
 
-            except Exception as e:
+        except Exception as e:
                 raise fastapi.HTTPException(status_code=404, detail=f"Error deleting worker: " + str(e))
 
-            return {"status": "success","deleted_worker_id": id}
+        return {"status": "success","deleted_worker_id": id}
 
-        else:
-            raise fastapi.HTTPException(status_code=404, detail="permission denied")
+        #else:
+         #   raise fastapi.HTTPException(status_code=404, detail="permission denied")

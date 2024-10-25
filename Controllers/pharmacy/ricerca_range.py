@@ -1,7 +1,7 @@
 from Models.Pharmacy import Pharmacy
 from Services.Auth import Auth
 import fastapi
-from tools.Haversine_formula import haversine_formula
+from tools.funzioni_di_ricerca import haversine_formula, pharmacy_in_range
 
 
 
@@ -19,8 +19,7 @@ class ricerca_ctl():
         pharmacyList=[]
         for pharmacy in pharmacies:
             id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web = pharmacy
-            distanza=haversine_formula(user_lat, user_lng, lat, lng)
-            if distanza <= range:
+            if pharmacy_in_range(lat, lng, user_lat, user_lng, range):
                 pharmacyList.append({
                     "id": id,
                     "nome_farmacia": nome_farmacia,

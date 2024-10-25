@@ -19,7 +19,7 @@ class delete_pharmacy_ctl:
         if self.auth.get_permission_level(worker_id)>1:
 
             query='SELECT * FROM pharmacy WHERE id = ?'
-            result= self.dbService.selectRAW(query, (id,))
+            result= self.dbService.select(query, (id,))
             if result == 0:
                 raise fastapi.HTTPException(status_code=404, detail="Pharmacy not found")
         
