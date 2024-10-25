@@ -22,7 +22,6 @@ class create_pharmacy_ctl:
          id = str(uuid4())
      nome_farmacia = sanitize(nome_farmacia)
      indirizzo = sanitize(indirizzo)
-     orari = sanitize(orari)
      turni= sanitize(turni)
      sito_web = sanitize(sito_web)
      

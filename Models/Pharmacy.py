@@ -14,6 +14,7 @@ class Pharmacy(pydantic.BaseModel):
     numeri: str
     sito_web: str
 
+    
 class Coordinates_Range(pydantic.BaseModel):
     
     min_latitude: float
