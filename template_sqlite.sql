@@ -1,6 +1,11 @@
 create table Pharmacy(
     id TEXT PRIMARY KEY NOT NULL,
     nome_farmacia TEXT NOT NULL,
+    cap TEXT NOT NULL,
+    comune TEXT NOT NULL,
+    provincia TEXT NOT NULL,
+    regione TEXT NOT NULL,
+    nazione TEXT NOT NULL,
     indirizzo TEXT NOT NULL UNIQUE,
     lat FLOAT NOT NULL UNIQUE,
     lng FLOAT NOT NULL UNIQUE,
