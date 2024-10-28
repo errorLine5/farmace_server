@@ -9,7 +9,7 @@ class delete_worker_ctl:
         self.dbService = dbService
         self.auth = Auth(dbService)
 
-    def delete_worker(self, id, worker_id, email, token):
+    def delete_worker(self, id, email, token):
 
         id=sanitize(id)
 
