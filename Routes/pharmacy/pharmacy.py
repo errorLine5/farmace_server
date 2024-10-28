@@ -82,8 +82,8 @@ class Route:
   
   @self.router.post("/ricerca")
   async def ricerca(userCoord: Coordinates_Range):
-    user_lat = userCoord.lat
-    user_lng = userCoord.lng
+    user_lat = userCoord.latitude
+    user_lng = userCoord.longitude
     range = userCoord.range
     return self.ricerca_ctl.ricerca(user_lat, user_lng, range)
   
