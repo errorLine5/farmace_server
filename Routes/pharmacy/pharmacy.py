@@ -6,6 +6,8 @@ from Controllers.pharmacy.searchByPos import SearchByPos_pharmacy_ctl
 from Controllers.pharmacy.ricerca_range import ricerca_ctl
 from Controllers.pharmacy.ricerca_orari import ricerca_orari_ctl
 from Controllers.pharmacy.ricerca_range_orari import ricerca_range_orari_ctl
+from Models.Pharmacy import Pharmacy
+from Models.Users import authParameters
 from uuid import uuid4 
 
 
@@ -25,9 +27,21 @@ class Route:
   
 
   @self.router.post("/addPharmacy")
-  async def fill(nome: str , indirizzo: str, lat: float, lng:float, orari:str, turni:str, numeri:str, sito_web: str, email:str,  token: str, id: str = None):
+  async def fill(pharmacy: Pharmacy, authParams : authParameters):
+     id = pharmacy.id
+     nome = pharmacy.nome_farmacia
+     indirizzo = pharmacy.indirizzo
+     lat = pharmacy.lat
+     lng = pharmacy.lng
+     orari = pharmacy.orari
+     turni = pharmacy.turni
+     numeri = pharmacy.numeri
+     sito_web = pharmacy.sito_web
+     email = authParameters.email
+     token = authParameters.token
      if id is None:
       id = str(uuid4())
+
      return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, token)
   
   @self.router.post("/searchByPos")
