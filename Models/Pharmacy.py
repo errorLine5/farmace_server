@@ -17,10 +17,13 @@ class Pharmacy(pydantic.BaseModel):
     
 class Coordinates_Range(pydantic.BaseModel):
     
-    min_latitude: float
-    max_latitude: float
-    min_longitude: float
-    max_longitude: float
+    latitude: float
+    longitude: float
+    range: float
+
+class date_time(pydantic.BaseModel):
+    giorno: str
+    orario_corrente: str 
 
 '''
 create table Pharmacy(
