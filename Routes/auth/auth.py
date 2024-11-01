@@ -18,6 +18,7 @@ class Route:
   
   @self.router.post("/login")
   async def login(authParams:authParameters):
+    print (authParams)
     email = authParams.email
     password = authParams.password 
     return self.loginctl.login( email, password)

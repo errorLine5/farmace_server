@@ -28,6 +28,7 @@ class ricerca_range_orari_ctl():
                     "turni": turni,
                     "numeri": numeri,
                     "sito_web": sito_web,
+                    "image": image
                 })
            
         return pharmacyList

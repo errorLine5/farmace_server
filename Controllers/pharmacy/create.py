@@ -17,7 +17,7 @@ class create_pharmacy_ctl:
   self.auth = Auth(dbService)
 
  def create_farmacy(self, id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web,  email ,  token):
-     id = sanitize(id)
+     id = (id)
      if id is None:
          id = str(uuid4())
      nome_farmacia = sanitize(nome_farmacia)
@@ -25,7 +25,9 @@ class create_pharmacy_ctl:
      turni= sanitize(turni)
      sito_web = sanitize(sito_web)
      
-     self.auth.isAuth(email=email, token=token)  
+     print ({id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web,  email ,  token}, end="\n\n" )
+     print (email, token , end="\n\n" )
+     self.auth.isAuth(email=email, token=token)
 
      newPharmacy = Pharmacy(
         id = id,
