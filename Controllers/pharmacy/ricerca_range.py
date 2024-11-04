@@ -18,7 +18,7 @@ class ricerca_ctl():
         
         pharmacyList=[]
         for pharmacy in pharmacies:
-            id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web = pharmacy
+            id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, image = pharmacy
             if pharmacy_in_range(lat, lng, user_lat, user_lng, range):
                 pharmacyList.append({
                     "id": id,
@@ -30,6 +30,8 @@ class ricerca_ctl():
                     "turni": turni,
                     "numeri": numeri,
                     "sito_web": sito_web,
+                    "image": image
+
                 })
 
         return pharmacyList

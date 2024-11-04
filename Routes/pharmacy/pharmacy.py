@@ -29,6 +29,7 @@ class Route:
 
   @self.router.post("/addPharmacy")
   async def fill(pharmacy: Pharmacy, authParams : authParameters):
+     print (pharmacy)
      id = pharmacy.id
      nome = pharmacy.nome_farmacia
      indirizzo = pharmacy.indirizzo
@@ -40,8 +41,11 @@ class Route:
      sito_web = pharmacy.sito_web
      email = authParams.email
      token = authParams.token
-     if id is None:
+     if id is None or id == "":
+      print ("id is None")
+
       id = str(uuid4())
+      print ("id is now " + id)
 
      return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, token)
   
@@ -96,8 +100,8 @@ class Route:
   
   @self.router.post("/ricerca_range_orari")
   async def ricerca_range_orari(userCoord: Coordinates_Range, orarioRicerca: date_time):
-    user_lat = userCoord.lat
-    user_lng = userCoord.lng
+    user_lat = userCoord.latitude
+    user_lng = userCoord.longitude
     range = userCoord.range
     giorno = orarioRicerca.giorno 
     orario_corrente = orarioRicerca.orario_corrente
