@@ -40,3 +40,14 @@ create table Pharmacy(
     sito_web TEXT NOT NULL,
     image TEXT
 );'''
+
+#   FORMATO ORARI
+#  '''orari_settimanali = [
+#     [ ["09:00", "12:30"], ["15:30", "18:00"]],  # Lunedì
+#     [ ["09:00", "12:30"], ["15:30", "18:00"]],  # Martedì
+#     [ ["09:00", "12:30"], ["15:30", "18:00"]],  # Mercoledì
+#     [ ["09:00", "12:30"], ["15:30", "18:00"]],  # Giovedì
+#     [ ["09:00", "12:30"], ["15:30", "18:00"]],  # Venerdì
+#     [ ["09:00", "13:00"], ["15:30", "18:00"]],   # Sabato
+#     [ [None, None], [None, None]]               # Domenica
+# ]'''
