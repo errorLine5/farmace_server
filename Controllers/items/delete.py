@@ -1,6 +1,7 @@
 from Services.Auth import Auth
 from Services.Sanification import sanitize
 from Services.FieldValidation import FieldValidation
+from Models.Items import Items
 import fastapi
 
 class delete_items_ctl:
@@ -9,13 +10,14 @@ class delete_items_ctl:
         self.auth = Auth(dbService)
         
     def delete_items(self, id, email, token):
-
+        
         id = sanitize (id)
 
         self.authisAuth(email=email, token=token)
 
         query='SELECT id FROM Items Where id=?'
         result= self.dbService.selectRAW(query, (id,))
+        
         if not result:
             raise fastapi.HTTPException(status_code=404, detail="Items not found")
             
