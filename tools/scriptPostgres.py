@@ -1,7 +1,7 @@
 import json
 import psycopg2
 
-db_name = 'db.db'
+db_name = 'database.db'
 user = 'tuo_username'
 password = 'tua_password'
 host = 'localhost'
