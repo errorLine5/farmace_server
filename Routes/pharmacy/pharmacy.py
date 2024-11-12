@@ -39,6 +39,7 @@ class Route:
      turni = pharmacy.turni
      numeri = pharmacy.numeri
      sito_web = pharmacy.sito_web
+     image = pharmacy.image
      email = authParams.email
      token = authParams.token
      if id is None or id == "":
@@ -47,7 +48,7 @@ class Route:
       id = str(uuid4())
       print ("id is now " + id)
 
-     return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, email, token)
+     return self.fill_ctl.create_farmacy( id, nome, indirizzo, lat, lng, orari, turni, numeri, sito_web, image, email, token)
   
   @self.router.post("/searchByPos")
   async def searchByPos( minCoord: Coordinates_Range, maxCoord: Coordinates_Range, authParams: authParameters):
@@ -57,7 +58,8 @@ class Route:
     maxLng= maxCoord.lng
     email = authParams.email
     token = authParams.token
-    return self.SearchByPos.search_by_pos(minLat, maxLat, minLng, maxLng, email, token)
+
+    return self.SearchByPos.search_by_pos(minLat, maxLat, minLng, maxLng, email, token, )
 
   @self.router.delete("/deletePharmacy")
   async def deletePharmacy(pharmacy: Pharmacy, worker: Worker, authParams: authParameters):

@@ -29,6 +29,25 @@ class Route:
     token = authParams.token
     return self.loginctl.tokenCheck(email, token)
   
+  @self.router.post("/logout")
+  async def logout(authParams:authParameters):
+    email = authParams.email
+    token = authParams.token
+    return self.loginctl.logout(email, token)
+  
+  @self.router.post("/refresh_token")
+  async def refresh_token(authParams:authParameters):
+    email = authParams.email
+    token = authParams.token
+    return self.loginctl.refreshToken(email, token)
+  
+  @self.router.post("/getMe")
+  async def getMe(authParams:authParameters):
+    email = authParams.email
+    token = authParams.token
+
+    return self.loginctl.getMe(email, token)
+  
   
   @self.router.post("/register" )
   async def register( user: Users):
