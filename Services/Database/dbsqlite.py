@@ -24,7 +24,7 @@ class DBSqlite:
       
     except Error as e:
       print(e)
-      exit()
+      raise HTTPException(status_code=404, detail=str(e))
       
   def execute(self,query, params):
     try:
