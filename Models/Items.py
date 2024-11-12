@@ -1,24 +1,24 @@
-from dataclasses import dataclass
+import pydantic
 
-@dataclass
-class Items:
-    id: int
-    name: str
-    category: str
+
+
+class Items(pydantic.BaseModel):
+
+    id: str
+    item_name: str
+    description_item: str
+    id_pharmacy: int
     price: float
-    quantity: int
-    pharmacy_id: int
+    
 
-    @staticmethod
-    def makeTableSqlite():
-        return """
-        CREATE TABLE IF NOT EXISTS items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            category TEXT NOT NULL,
-            price REAL NOT NULL,
-            quantity INTEGER NOT NULL,
-            pharmacy_id INTEGER NOT NULL,
-            FOREIGN KEY (pharmacy_id) REFERENCES pharmacy (id)
-        );
-        """
+
+'''
+create table Item(
+    id TEXT PRIMARY KEY NOT NULL,
+    item_name TEXT NOT NULL,
+    description_item TEXT NOT NULL,
+    id_pharmacy INTEGER NOT NULL,
+    price FLOAT NOT NULL,
+    FOREIGN KEY (id_pharmacy) REFERENCES Pharmacy(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+'''
