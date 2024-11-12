@@ -3,6 +3,7 @@ import json
 import re
 from uuid import uuid4
 from Models.Pharmacy import Pharmacy
+from Models.Users import Users
 from Models.Worker import Worker
 from Services.Sanification import sanitize
 import fastapi
@@ -16,7 +17,7 @@ class create_pharmacy_ctl:
   self.dbService = dbService
   self.auth = Auth(dbService)
 
- def create_farmacy(self, id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web,  email ,  token):
+ def create_farmacy(self, id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, image,  email ,  token):
      id = (id)
      if id is None:
          id = str(uuid4())
@@ -38,7 +39,8 @@ class create_pharmacy_ctl:
          orari= orari,
          turni= turni,
          numeri = str(numeri),
-         sito_web = sito_web
+         sito_web = sito_web,
+         image = image
         )
 
      query = BuildQuery(newPharmacy).insert_into().build()
@@ -52,10 +54,14 @@ class create_pharmacy_ctl:
         id=str(uuid4()),
         id_pharmacy=id,
         id_user=str(id_user),
-        permission=2
+        permission=3
       )
 
-     query = BuildQuery(newWorker).insert_into().build()
-     self.dbService.executeRAW(query)
-
+     print (newWorker.id, newWorker.id_pharmacy, newWorker.id_user, newWorker.permission)
+     query = f"INSERT INTO Worker (id, id_pharmacy, id_user, permission) VALUES (?, ?, ?, ?)"
+     self.dbService.execute(query, (newWorker.id, newWorker.id_pharmacy, newWorker.id_user, newWorker.permission))
+     print ("worker inserted")
+     self.dbService.execute("UPDATE Users SET can_own = 0 WHERE email = ?", (email,))
+     print ("user updated")
      return {"status": "success", "id_pharmacy": id}
+ 

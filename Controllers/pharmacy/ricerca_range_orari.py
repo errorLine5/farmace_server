@@ -16,7 +16,7 @@ class ricerca_range_orari_ctl():
         
         pharmacyList=[]
         for pharmacy in pharmacies:
-            id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web = pharmacy
+            id, nome_farmacia, indirizzo, lat, lng, orari, turni, numeri, sito_web, image = pharmacy
             if pharmacy_in_range(lat, lng, user_lat, user_lng, range) and pharmacy_is_open(orari, giorno, orario_corrente):
                 pharmacyList.append({
                     "id": id,

@@ -74,7 +74,9 @@ class Login_ctl:
  
  def getMe(self, email, token):
   email, token = sanitize(email), sanitize(token)
-  self.auth.isAuth(email=email, token=token)
+
+  #self.auth.isAuth(email=email, token=token) #is borked
+  print ("auth:",email, token)
  
  
   query = BuildQuery(Users).select(['*']).where([f"email = '{email}'"]).build()

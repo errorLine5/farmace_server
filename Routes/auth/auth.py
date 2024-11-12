@@ -45,6 +45,7 @@ class Route:
   async def getMe(authParams:authParameters):
     email = authParams.email
     token = authParams.token
+
     return self.loginctl.getMe(email, token)
   
   
