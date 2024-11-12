@@ -78,10 +78,8 @@ class Login_ctl:
   #self.auth.isAuth(email=email, token=token) #is borked
   print ("auth:",email, token)
  
- 
-  query = BuildQuery(Users).select(['*']).where([f"email = '{email}'"]).build()
+  # Select all fields except password
+  query = BuildQuery(Users).select(['username', 'email', 'token', 'picture', 'token_expiration','can_own']).where([f"email = '{email}'"]).build()
   result = self.dbService.selectRAW(query)
-
-
 
   return result[0]
