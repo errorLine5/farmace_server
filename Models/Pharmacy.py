@@ -13,14 +13,19 @@ class Pharmacy(pydantic.BaseModel):
     turni: str
     numeri: str
     sito_web: str
+    image: str
+
 
     
 class Coordinates_Range(pydantic.BaseModel):
     
-    min_latitude: float
-    max_latitude: float
-    min_longitude: float
-    max_longitude: float
+    latitude: float
+    longitude: float
+    range: float
+
+class date_time(pydantic.BaseModel):
+    giorno: str
+    orario_corrente: str 
 
 '''
 create table Pharmacy(
@@ -32,5 +37,6 @@ create table Pharmacy(
     orari JSON NOT NULL,
     turni JSON NOT NULL,
     numeri TEXT NOT NULL,
-    sito_web TEXT NOT NULL
+    sito_web TEXT NOT NULL,
+    image TEXT
 );'''

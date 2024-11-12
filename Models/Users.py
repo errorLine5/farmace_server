@@ -19,6 +19,11 @@ class Users(pydantic.BaseModel):
  email_token: Optional[str] = None
 
 
+class authParameters(pydantic.BaseModel):
+ email: str
+ password:str
+ token : str
+
 
 '''
 create table Users(

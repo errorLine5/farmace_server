@@ -139,6 +139,10 @@ class BuildQuery:
   self.out = query
   return self
  
+
+ 
+
+
  def insert_into (self, columns = [], values = []):
   table = self.model.model_json_schema()["title"]
   print ("table name: ", table)
@@ -171,6 +175,7 @@ class BuildQuery:
   print ("\n",self.values, "\n")
  
  def build (self):
+  print (self.out)
   return self.out
  
 

@@ -3,6 +3,7 @@ import json
 import re
 
 import fastapi
+from Services.Auth import Auth
 from Services.Sanification import sanitize
 from Controllers.Auth.TokenAuth import Token
 from tools.Query import BuildQuery
@@ -14,6 +15,7 @@ class Login_ctl:
  def __init__(self, dbService):
   self.dbService = dbService
   self.token = Token()
+  self.auth = Auth(dbService)
 
 
  def login( self, email, password):
@@ -52,3 +54,34 @@ class Login_ctl:
 
   
   return {"token": token, "token_expiration": token_expiration}
+
+ def logout(self, email, token):
+  # require auth
+  email, token = sanitize(email), sanitize(token)
+  self.auth.isAuth(email=email, token=token)
+
+  query = "UPDATE users SET token = NULL, token_expiration = NULL WHERE email = ?"
+  self.dbService.execute(query, (email,))
+  return {"message": "Logout successful"}
+ 
+ def refreshToken(self, email, token):
+  email, token = sanitize(email), sanitize(token)
+  self.auth.isAuth(email=email, token=token)
+  query = "UPDATE users SET token = ?, token_expiration = ? WHERE email = ?"
+  now = str(datetime.datetime.now()+datetime.timedelta(days=10))
+  self.dbService.execute(query, (token, now, email))
+  return {"token": token, "token_expiration": now}
+ 
+ def getMe(self, email, token):
+  email, token = sanitize(email), sanitize(token)
+
+  #self.auth.isAuth(email=email, token=token) #is borked
+  print ("auth:",email, token)
+ 
+ 
+  query = BuildQuery(Users).select(['*']).where([f"email = '{email}'"]).build()
+  result = self.dbService.selectRAW(query)
+
+
+
+  return result[0]
