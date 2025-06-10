@@ -39,6 +39,8 @@ create table Pharmacy(
     numeri TEXT NOT NULL,
     sito_web TEXT NOT NULL,
     image TEXT
+    
+
 );'''
 
 #   FORMATO ORARI

@@ -21,32 +21,32 @@ class Route:
     print (authParams)
     email = authParams.email
     password = authParams.password 
-    return self.loginctl.login( email, password)
+    return await self.loginctl.login( email, password)
 
   @self.router.post("/token_test")
   async def token_test(authParams:authParameters):
     email = authParams.email
     token = authParams.token
-    return self.loginctl.tokenCheck(email, token)
+    return await self.loginctl.tokenCheck(email, token)
   
   @self.router.post("/logout")
   async def logout(authParams:authParameters):
     email = authParams.email
     token = authParams.token
-    return self.loginctl.logout(email, token)
+    return  await self.loginctl.logout(email, token)
   
   @self.router.post("/refresh_token")
   async def refresh_token(authParams:authParameters):
     email = authParams.email
     token = authParams.token
-    return self.loginctl.refreshToken(email, token)
+    return await self.loginctl.refreshToken(email, token)
   
   @self.router.post("/getMe")
   async def getMe(authParams:authParameters):
     email = authParams.email
     token = authParams.token
 
-    return self.loginctl.getMe(email, token)
+    return await self.loginctl.getMe(email, token)
   
   
   @self.router.post("/register" )

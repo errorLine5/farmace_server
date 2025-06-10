@@ -1,12 +1,22 @@
 import time
 from typing import Union
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import Services.Database.dbsqlite as db
 import importlib
 import os
 
 app = FastAPI()
 app.db = db.DBSqlite("database.db")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:51686"],  # Add your Flutter web app URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 __all__ = []
 files = []

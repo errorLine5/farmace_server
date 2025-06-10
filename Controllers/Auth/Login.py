@@ -8,6 +8,7 @@ from Services.Sanification import sanitize
 from Controllers.Auth.TokenAuth import Token
 from tools.Query import BuildQuery
 from Models.Users import Users
+from prisma import Prisma
 
 
 
@@ -18,70 +19,95 @@ class Login_ctl:
   self.auth = Auth(dbService)
 
 
- def login( self, email, password):
+ async def login(self, email, password):
+  prisma = Prisma()
+  await prisma.connect()
+  print("login")
   email, password = sanitize(email), sanitize(password)
-  
+
+  user = await prisma.user.find_first(where={"email": email, "password": password})
+
+  print("user:", user)
+  print("user.id:", user.id)
   token = self.token.generateToken()
-  now = str(datetime.datetime.now()+datetime.timedelta(days=10))
-  
-  query = BuildQuery(Users).select(['token', 'token_expiration']).where([f"email = '{email}' AND password = '{password}'"]).build()
-  result = self.dbService.selectRAW(query)
+  now = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
-  if len(result) == 0:
-   raise fastapi.HTTPException(status_code=404, detail="User not found")
-  
-  
-  
-  query = "UPDATE users SET token = ?, token_expiration = ? WHERE email = ?" #update is not available in query builder
-  self.dbService.execute(query, (token, now, email))
-  return {"token": token, "token_expiration": now}
+
+  id_user = user.id
+  session = await prisma.session.create(
+    data={
+     "id_user": id_user,
+      "token": token,
+      "token_expiration": now
+    }
+  )
+
+  await prisma.disconnect()
+  return {"token": session.token, "token_expiration": session.token_expiration, "email": user.email}
  
- def tokenCheck(self,email, token):
+ async def tokenCheck(self,email, token):
   email, token = sanitize(email), sanitize(token)
-  #"SELECT * FROM users WHERE email = ? AND token = ?"
-  query =  BuildQuery(Users).select(['token', 'token_expiration']).where([f"email = '{email}' AND token = '{token}'"]).build()
-  print (query)
-  result = self.dbService.selectRAW(query)
-  
+  prisma = Prisma()
+  await prisma.connect()
 
-  print (result)
-  token_expiration = result[0][1]
-  now = str(datetime.datetime.now())
-  if len(result) == 0:
+  print("tokenCheck")
+  print("email:", email)
+  print("token:", token)
+
+  user = await prisma.user.find_first(where={"email": email})
+  session = await prisma.session.find_first(where={"token": token, "id_user": user.id})
+
+  if session is None:
    raise fastapi.HTTPException(status_code=404, detail="Token not valid")
-  if token_expiration < now:
+  if session.token_expiration < datetime.datetime.now():
    raise fastapi.HTTPException(status_code=404, detail="Token expired")
-
+  await prisma.disconnect()
+  return {"token": token, "token_expiration": session.token_expiration}
   
-  return {"token": token, "token_expiration": token_expiration}
 
- def logout(self, email, token):
+
+ async def logout(self, email, token):
+  prisma = Prisma()
+  await prisma.connect()
   # require auth
   email, token = sanitize(email), sanitize(token)
   self.auth.isAuth(email=email, token=token)
 
-  query = "UPDATE users SET token = NULL, token_expiration = NULL WHERE email = ?"
-  self.dbService.execute(query, (email,))
+  #query = "UPDATE users SET token = NULL, token_expiration = NULL WHERE email = ?"
+  #self.dbService.execute(query, (email,))
+  await prisma.user.update(where={"email": email}, data={"token": None, "token_expiration": None})
+  await prisma.disconnect()
   return {"message": "Logout successful"}
  
- def refreshToken(self, email, token):
+ async def refreshToken(self, email, token):
+  prisma = Prisma()
+  await prisma.connect()
   email, token = sanitize(email), sanitize(token)
   self.auth.isAuth(email=email, token=token)
-  query = "UPDATE users SET token = ?, token_expiration = ? WHERE email = ?"
-  now = str(datetime.datetime.now()+datetime.timedelta(days=10))
-  self.dbService.execute(query, (token, now, email))
+  
+  now = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=10)).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+  await prisma.user.update(
+    where={"email": email},
+    data={"token": token, "token_expiration": now}
+  )
+  await prisma.disconnect()
   return {"token": token, "token_expiration": now}
  
- def getMe(self, email, token):
+ async def getMe(self, email, token):
+  prisma = Prisma()
+  await prisma.connect()
   email, token = sanitize(email), sanitize(token)
 
+
+  
   #self.auth.isAuth(email=email, token=token) #is borked
-  print ("auth:",email, token)
- 
- 
-  query = BuildQuery(Users).select(['*']).where([f"email = '{email}'"]).build()
-  result = self.dbService.selectRAW(query)
+  print("auth:", email, token)
+  
+  user = await prisma.user.find_first(where={"email": email})
 
-
-
-  return result[0]
+  await prisma.disconnect()
+  
+  if user is None:
+    raise fastapi.HTTPException(status_code=404, detail="User not found")
+    
+  return user

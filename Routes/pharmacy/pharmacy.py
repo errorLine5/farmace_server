@@ -91,7 +91,7 @@ class Route:
     user_lat = userCoord.latitude
     user_lng = userCoord.longitude
     range = userCoord.range
-    return self.ricerca_ctl.ricerca(user_lat, user_lng, range)
+    return  await self.ricerca_ctl.ricerca(user_lat, user_lng, range)
   
   @self.router.post("/ricerca_orari")
   async def ricerca_orari(orarioRicerca: date_time):
