@@ -4,6 +4,7 @@ from Models import Pharmacy, Users, Worker
 from tools.Query import BuildQuery
 from fastapi import FastAPI
 import fastapi
+from prisma import Prisma
 
 
 
@@ -12,18 +13,43 @@ class Auth:
  def __init__(self, dbService):
   self.dbService = dbService
   
- def isAuth(self,email, token):
+ async def isAuth(self,email, token):
   
   # Prepare the SQL statement using parameterized queries
-  query = "SELECT * FROM users WHERE email = ? AND token = ?"
+  prisma = Prisma()
+  await prisma.connect()
+  user = await prisma.user.find_first(
+    where = {
+      "email": email,
+    }
+  )
+
+  
+  token_user = await prisma.session.find_first(
+    where = {
+      "token": token,
+      "id_user": user.id
+    }
+  )
+
+
+
+  await prisma.disconnect()
   # Execute the query with parameters
-  result = self.dbService.select(query, (email, token))
-  # Check if the token is valid
-  if len(result) == 0:
+  if not user or not token_user:
    raise fastapi.HTTPException(status_code=404, detail="Token not valid")
 
   return self
  
+
+
+
+
+
+
+
+
+
  def isAuthorizedToCreate (self, email, token): ##TO BE TESTED
   query = BuildQuery(Users).select(['can_own']).where([f"email = '{email}' AND token = '{token}'"]).build()
   result = self.dbService.selectRAW(query)

@@ -107,7 +107,11 @@ def generate_items(pharmacies, num_records=30):
                 "item_name": fake.catch_phrase(),
                 "description_item": fake.text(max_nb_chars=200),
                 "id_pharmacy": pharmacy["id"],
-                "price": round(random.uniform(1.0, 999.99), 2)
+                "price": round(random.uniform(1.0, 999.99), 2),
+                "category": random.choice(["DRUGS", "COSMETICS", "BABY", "FOOD", "PETS", "TOOLS", "HOME", "CLOTHING", "ELECTRONICS", "SPORTS", "OTHER"]),
+                "image": f"https://picsum.photos/id/{random.randint(1, 1000)}/900/900",
+                "quantity": random.randint(1, 100)
+            
             }
             items.append(item)
             

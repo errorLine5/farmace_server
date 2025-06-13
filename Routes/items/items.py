@@ -2,8 +2,11 @@ from fastapi import APIRouter, FastAPI
 from Controllers.items.create import create_items_ctl 
 from Controllers.items.delete import delete_items_ctl
 from Controllers.items.edit import edit_items_ctl
+from Controllers.items.stock import stock_ctl
 from Models.Items import Items
 from uuid import uuid4 
+import fastapi
+from typing import Union, Optional
 
 
 class Route:
@@ -13,6 +16,7 @@ class Route:
   self.fill_ctl = create_items_ctl(app.db)
   self.delete_ctl = delete_items_ctl(app.db)
   self.edit_ctl = edit_items_ctl(app.db)
+  self.stock_ctl = stock_ctl(app.db)
 
   @self.router.post("/addItems")
   async def fill(id: str, item_name: str, description_item: str, id_pharmacy: int, price: float, email:str,sito_web: str,token: str ):
@@ -29,5 +33,23 @@ class Route:
     print(items)
 
     return self.edit_ctl.edit_items( id, items, email, token)
+  
+  @self.router.post("/stock/create")
+  async def stock(id: str, id_item: str, quantity: int, price: float, email: str, token: str):
+    return self.stock_ctl.create_stock(id, id_item, quantity, price, email, token)
+  
+  @self.router.post("/stock/get")
+  async def get_stock(id: Optional[str] = None, email: Optional[str] = None, token: Optional[str] = None):
+    if id == "null" or id is None:
+      raise fastapi.HTTPException(status_code=400, detail="Pharmacy ID is required")
+    return await self.stock_ctl.get_stock(id, email, token)
+  
+  @self.router.post("/stock/modify")
+  async def modify_stock(id: str, id_item: str, quantity: int, price: float, email: str, token: str):
+    return self.stock_ctl.modify_stock(id, id_item, quantity, price, email, token)
+  
+  @self.router.post("/stock/delete")
+  async def delete_stock(id: str, email: str, token: str):
+    return self.stock_ctl.delete_stock(id, email, token)
   
   app.include_router( prefix="/items" ,tags=["items"], router=self.router)

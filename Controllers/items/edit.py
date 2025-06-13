@@ -24,8 +24,8 @@ class edit_items_ctl:
             raise fastapi.HTTPException(status_code=404, detail="Items not found")
 
         try:  
-            query = f'UPDATE items SET item_name = ?, description_item = ?, id_pharmacy = ?, price = ?, WHERE id = ?'
-            self.dbService.execute(query, (items.nome, items.description_item, items.id_pharmacy, items.price,  id))
+            query = f'UPDATE items SET item_name = ?, description_item = ?, id_pharmacy = ?, price = ?, category = ?, image = ?, quantity = ? WHERE id = ?'
+            self.dbService.execute(query, (items.nome, items.description_item, items.id_pharmacy, items.price, items.category, items.image, items.quantity,  id))
         except Exception as e:
             raise fastapi.HTTPException(status_code=500, detail="Error editing pharmacy: " + str(e))
         

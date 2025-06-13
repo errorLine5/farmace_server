@@ -23,6 +23,17 @@ model Pharmacy {
   image       String?
   items       Item[]   // Relation to items
   workers     Worker[] // Relation to workers
+  stocks      Stock[]  // Relation to stocks
+}
+
+model Stock {
+  id          String   @id
+  id_item     String
+  quantity    Int
+  price       Float
+  pharmacy    Pharmacy @relation(fields: [id_pharmacy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id_pharmacy String
+  item        Item     @relation(fields: [id_item], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Item {
@@ -30,8 +41,11 @@ model Item {
   item_name       String
   description_item String
   price           Float
+  category        String   @default("OTHER")
+  image           String?
   pharmacy        Pharmacy @relation(fields: [id_pharmacy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   id_pharmacy     String
+  stocks          Stock[]  // Add this line
 }
 
 model User {

@@ -8,13 +8,14 @@ import fastapi
 from Services.FieldValidation import FieldValidation
 from Services.Auth import Auth
 from tools.Query import BuildQuery
+from prisma import Prisma
 
 class create_items_ctl:
     def __init__(self, dbService):
         self.dbService = dbService
         self.auth = Auth(dbService)
   
-    def create_items(self, id, item_name , description_item, id_pharmacy, price, email, token):
+    def create_items(self, id, item_name , description_item, id_pharmacy, price, email, category, image, quantity, token):
         id = sanitize(id)
         item_name = sanitize(item_name)
         description_item = sanitize(description_item) 
@@ -38,7 +39,7 @@ class create_items_ctl:
             item_name= item_name,
             description_item=  description_item,
             id_pharmacy = id_pharmacy,
-            price = price
+            price = price,
         )
 
         query=BuildQuery(newItems).insert_into().build()
@@ -47,4 +48,3 @@ class create_items_ctl:
         return {"status": "success", "id_items": id}
 
 
-     
